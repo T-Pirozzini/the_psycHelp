@@ -1,9 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.the_psychelp">
+    package="com.the_psychelp.app">
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <application
         android:label="the_psychelp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data 
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDNf3GMs-4P_pbSflPxoBFaToeVqwA87KA"/>  
         <activity
             android:name=".MainActivity"
             android:exported="true"
