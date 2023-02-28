@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:the_psychelp/pages/map.dart';
+import 'package:the_psychelp/pages/map_page.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -13,14 +14,18 @@ class _HomePageState extends State<HomePage> {
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   static const List<Widget> _widgetOptions = <Widget>[
     Flexible(
-      child: Map(),
+      child: GoogleMapsComponent(
+        location:
+          LatLng(37.7749, -122.4194)),
     ),
     Icon(
       Icons.camera,
       size: 150,
     ),
+    // 
     Text(
       'Index 1: Business',
       style: optionStyle,
@@ -77,8 +82,8 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      drawer: Drawer(       
-        child: ListView(        
+      drawer: Drawer(
+        child: ListView(
           padding: EdgeInsets.zero,
           children: [
             DrawerHeader(
@@ -98,21 +103,21 @@ class _HomePageState extends State<HomePage> {
             ListTile(
               title: const Text('Home'),
               leading: const Icon(Icons.home),
-              onTap: () {                
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: const Text('About'),
               leading: const Icon(Icons.info),
-              onTap: () {           
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: const Text('Logout'),
               leading: const Icon(Icons.logout),
-              onTap: () {                
+              onTap: () {
                 Navigator.pop(context);
               },
             ),
@@ -121,14 +126,13 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(        
+          BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
             label: 'Favourite',
-            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
