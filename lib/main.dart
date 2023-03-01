@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:the_psychelp/pages/landing_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const ThePsycHelp());
 }
 
@@ -20,5 +23,3 @@ class ThePsycHelp extends StatelessWidget {
     );
   }
 }
-
-
