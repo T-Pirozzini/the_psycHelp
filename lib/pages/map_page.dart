@@ -34,6 +34,7 @@ class _GoogleMapsComponentState extends State<GoogleMapsComponent> {
     _getCurrentLocation();
   }
 
+// Get Current Location
   void _getCurrentLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -76,44 +77,7 @@ class _GoogleMapsComponentState extends State<GoogleMapsComponent> {
     });
   }
 
-  // Future<void> _onSearchButtonPressed() async {
-  //   List<Location> locations = await locationFromAddress(_searchQuery);
-  //   if (locations.isEmpty) {
-  //     // Handle no results found
-  //     return;
-  //   }
-  //   Location location = locations.first;
-  //   LatLng latLng = LatLng(location.latitude, location.longitude);
-  //   _controller.animateCamera(CameraUpdate.newCameraPosition(
-  //     CameraPosition(
-  //       target: latLng,
-  //       zoom: 14,
-  //     ),
-  //   ));
-  // }
-
-//   Future<void> _onSearchButtonPressed() async {
-//   List<Location> locations = await locationFromAddress(_searchQuery);
-//   if (locations.isEmpty) {
-//     // Show an error message
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: Text('Location not found'),
-//         duration: Duration(seconds: 3),
-//       ),
-//     );
-//     return;
-//   }
-//   Location location = locations.first;
-//   LatLng latLng = LatLng(location.latitude, location.longitude);
-//   _controller.animateCamera(CameraUpdate.newCameraPosition(
-//     CameraPosition(
-//       target: latLng,
-//       zoom: 14,
-//     ),
-//   ));
-// }
-
+// Search Bar
   Future<void> _onSearchButtonPressed() async {
     try {
       List<Location> locations = await locationFromAddress(_searchQuery);
