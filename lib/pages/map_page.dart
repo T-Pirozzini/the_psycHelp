@@ -18,15 +18,14 @@ class GoogleMapsComponent extends StatefulWidget {
 class _GoogleMapsComponentState extends State<GoogleMapsComponent> {
   late GoogleMapController _controller;
   late Position _currentPosition = Position(
-    latitude: 0.0,
-    longitude: 0.0,
-    timestamp: DateTime.now(),
-    accuracy: 0.0,
-    altitude: 0.0,
-    heading: 0.0,
-    speed: 0.0,
-    speedAccuracy: 0.0,
-  );
+      longitude: widget.location.longitude,
+      latitude: widget.location.latitude,
+      timestamp: DateTime.now(),
+      accuracy: 0.0,
+      altitude: 0.0,
+      heading: 0.0,
+      speed: 0.0,
+      speedAccuracy: 0.0);
   String _searchQuery = '';
 
   @override
@@ -64,33 +63,77 @@ class _GoogleMapsComponentState extends State<GoogleMapsComponent> {
     final position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
     setState(() {
-      _currentPosition = position;
+      _currentPosition = Position(
+        latitude: position.latitude,
+        longitude: position.longitude,
+        timestamp: DateTime.now(),
+        accuracy: position.accuracy,
+        altitude: position.altitude,
+        heading: position.heading,
+        speed: position.speed,
+        speedAccuracy: position.speedAccuracy,
+      );
     });
   }
 
-  Future<void> _onSearchButtonPressed() async {
-    List<Location> locations = await locationFromAddress(_searchQuery);
-    if (locations.isEmpty) {
-      // Handle no results found
-      return;
-    }
-    Location location = locations.first;
-    LatLng latLng = LatLng(location.latitude, location.longitude);
-    _controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        target: latLng,
-        zoom: 14,
-      ),
-    ));
-  }
+  // Future<void> _onSearchButtonPressed() async {
+  //   List<Location> locations = await locationFromAddress(_searchQuery);
+  //   if (locations.isEmpty) {
+  //     // Handle no results found
+  //     return;
+  //   }
+  //   Location location = locations.first;
+  //   LatLng latLng = LatLng(location.latitude, location.longitude);
+  //   _controller.animateCamera(CameraUpdate.newCameraPosition(
+  //     CameraPosition(
+  //       target: latLng,
+  //       zoom: 14,
+  //     ),
+  //   ));
+  // }
 
-  void _onCurrentLocationButtonPressed() {
-    _controller.animateCamera(CameraUpdate.newCameraPosition(
-      CameraPosition(
-        target: LatLng(_currentPosition.latitude, _currentPosition.longitude),
-        zoom: 14,
-      ),
-    ));
+//   Future<void> _onSearchButtonPressed() async {
+//   List<Location> locations = await locationFromAddress(_searchQuery);
+//   if (locations.isEmpty) {
+//     // Show an error message
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(
+//         content: Text('Location not found'),
+//         duration: Duration(seconds: 3),
+//       ),
+//     );
+//     return;
+//   }
+//   Location location = locations.first;
+//   LatLng latLng = LatLng(location.latitude, location.longitude);
+//   _controller.animateCamera(CameraUpdate.newCameraPosition(
+//     CameraPosition(
+//       target: latLng,
+//       zoom: 14,
+//     ),
+//   ));
+// }
+
+  Future<void> _onSearchButtonPressed() async {
+    try {
+      List<Location> locations = await locationFromAddress(_searchQuery);
+      if (locations.isEmpty) {
+        // Handle no results found
+        throw Exception("No results found");
+      }
+      Location location = locations.first;
+      LatLng latLng = LatLng(location.latitude, location.longitude);
+      _controller.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: latLng,
+          zoom: 14,
+        ),
+      ));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.toString()),
+      ));
+    }
   }
 
   @override
@@ -101,14 +144,17 @@ class _GoogleMapsComponentState extends State<GoogleMapsComponent> {
           GoogleMap(
             onMapCreated: (controller) => _controller = controller,
             initialCameraPosition: CameraPosition(
-              target: widget.location,
+              target:
+                  LatLng(_currentPosition.latitude, _currentPosition.longitude),
               zoom: 14,
             ),
+            myLocationEnabled: true,
+            myLocationButtonEnabled: true,
           ),
           Positioned(
             top: 0,
             left: 0,
-            right: 0,
+            right: 80,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
@@ -131,12 +177,6 @@ class _GoogleMapsComponentState extends State<GoogleMapsComponent> {
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _onCurrentLocationButtonPressed();
-        },
-        child: const Icon(Icons.my_location),
       ),
     );
   }
