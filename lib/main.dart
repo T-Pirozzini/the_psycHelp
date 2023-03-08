@@ -3,13 +3,13 @@ import 'package:the_psychelp/pages/landing_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(const ThePsycHelp());
 }
 
 class ThePsycHelp extends StatelessWidget {
-  const ThePsycHelp({super.key});
+  const ThePsycHelp({super.key});  
 
   @override
   Widget build(BuildContext context) {
